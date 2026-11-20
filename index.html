@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Ideology Flags</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#14161a;--pn:#1d2025;--ln:#2f343d;--tx:#e9ecf1;--mt:#929aa8;--ac:#6f8fbf;--ac2:#35507a;--dn:#b5584f;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 "IBM Plex Sans",system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);border-bottom:1px solid var(--ln)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px 16px}
+.logo{font-weight:600;font-size:18px;letter-spacing:.2px}
+#st{font-size:13px;color:var(--mt);padding:4px 10px;border:1px solid var(--ln);border-radius:20px}
+#st.s{color:var(--ac)}#st.e{color:#fff;background:var(--dn);border-color:var(--dn)}
+nav{display:flex;gap:4px;overflow-x:auto;padding:0 12px 8px}
+nav a{white-space:nowrap;padding:10px 14px;border-radius:8px;color:var(--mt);text-decoration:none;min-height:44px;display:flex;align-items:center;cursor:pointer}
+nav a.on{background:var(--ac2);color:#fff}
+main{max-width:1100px;margin:0 auto;padding:16px}
+h1,h2,h3{margin:0 0 8px;font-weight:600}h1{font-size:26px}h2{font-size:22px}h3{font-size:17px}
+.mut{color:var(--mt)}p{margin:4px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:12px;position:relative;cursor:pointer}
+.card:hover{border-color:var(--ac)}
+.stat{font-size:34px;font-weight:600;color:var(--ac)}
+.flag{aspect-ratio:3/2;background:#0d0e10;border:1px solid var(--ln);border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:10px;color:var(--mt);font-size:13px}
+.flag img{width:100%;height:100%;display:block}
+.flag.big{max-width:420px;width:100%}.flag.sm{width:84px;margin:0;flex:none}
+.btn{background:var(--ac2);color:#fff;border:0;border-radius:8px;padding:10px 16px;min-height:44px;font:inherit;cursor:pointer}
+.btn.g{background:transparent;border:1px solid var(--ln);color:var(--tx)}.btn.d{background:var(--dn)}
+.btn:hover{filter:brightness(1.15)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+input,select,textarea{width:100%;background:#0f1114;color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:11px 12px;font:inherit;min-height:44px}
+textarea{min-height:90px;resize:vertical}
+label{display:block;font-size:14px;color:var(--mt);margin:12px 0 4px}
+.row input,.row select{width:auto;flex:1;min-width:140px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
+.chip{background:var(--pn);color:var(--tx);border:1px solid var(--ln);border-radius:22px;padding:8px 16px;min-height:44px;white-space:nowrap;font:inherit;cursor:pointer}
+.chip.on{background:var(--ac2);border-color:var(--ac)}
+.hero{display:flex;gap:20px;flex-wrap:wrap;margin-top:14px}.hero>div{flex:1;min-width:240px}
+.li{display:flex;gap:12px;align-items:center;background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:10px;margin-bottom:8px}.li>div{flex:1}
+.star{position:absolute;top:6px;right:6px;background:none;border:0;color:var(--mt);font-size:22px;min-width:44px;min-height:44px;cursor:pointer}.star.on{color:#e0b84c}
+.tag{font-size:12px;color:var(--ac);border:1px solid var(--ac2);border-radius:10px;padding:1px 8px}
+.vb{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:14px;margin:12px 0}
+.md{position:fixed;inset:0;background:#000c;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+.md[hidden]{display:none}
+.mb{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:18px;max-width:560px;width:100%;max-height:88vh;overflow:auto}
+.mb img{max-width:100%;max-height:70vh;display:block;margin:auto}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#000;border:1px solid var(--ac);padding:10px 16px;border-radius:8px;z-index:60;max-width:90%}
+#toast[hidden]{display:none}
+@media print{header,.noprint,#toast{display:none!important}body{background:#fff;color:#000}.card,.li{border-color:#999;background:#fff}}
+</style>
+</head>
+<body>
+<header><div class="top"><span class="logo">Ideology Flags</span><span id="st">Загрузка…</span></div>
+<nav id="nav"><a data-p="home" data-a="go">Главная</a><a data-p="countries" data-a="go">Мои государства</a><a data-p="ideologies" data-a="go">Библиотека идеологий</a><a data-p="new" data-a="go">Создать государство</a><a data-p="backup" data-a="go">Резервные копии</a><a data-p="settings" data-a="go">Настройки</a></nav></header>
+<main id="main"></main>
+<div class="md" id="md" hidden><div class="mb" id="mb"></div></div>
+<div id="toast" hidden></div>
+<input type="file" id="fi" accept="image/png,image/jpeg,image/webp,image/svg+xml,.png,.jpg,.jpeg,.webp,.svg" hidden>
+<input type="file" id="imf" accept=".zip,.json" hidden>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MIME={png:'image/png',jpg:'image/jpeg',webp:'image/webp',svg:'image/svg+xml'};
+const OK=Object.values(MIME);
+const STD=["Абсолютизм","Военная хунта","Либерализм","Консерватизм","Социал-демократия","Прогрессивизм","Фашизм","Национал-социализм","Социализм","Коммунизм","Анархизм","Анархо-коммунизм","Анархо-капитализм","Либертарианство"];
+let db,S={c:[],i:[]},cur=null,tab='ov',sel=null,hist=[],lastSnap=0,ft=null,tmp={},qC='',qI='',sC='upd',sI='az',favC=0,favI=0,m3=null;
+const urls={},P={},T={};
+/* ---------- storage ---------- */
+function openDB(){return new Promise((ok,no)=>{const r=indexedDB.open('ideology-flags',2);r.onupgradeneeded=()=>{const d=r.result;['countries','ideologies','images','meta'].forEach(n=>d.objectStoreNames.contains(n)||d.createObjectStore(n,{keyPath:'id'}))};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
+const tx=(st,mode,fn)=>new Promise((ok,no)=>{const t=db.transaction(st,mode);let o;try{o=fn(t)}catch(e){return no(e)}t.oncomplete=()=>ok(o&&o.result);t.onerror=t.onabort=()=>no(t.error)});
+const all=s=>tx(s,'readonly',t=>t.objectStore(s).getAll());
+const put=(s,o)=>tx(s,'readwrite',t=>t.objectStore(s).put(o));
+const rm=(s,id)=>tx(s,'readwrite',t=>t.objectStore(s).delete(id));
+const getImg=id=>tx('images','readonly',t=>t.objectStore('images').get(id));
+function setSt(k){const e=$('#st');e.className=k==='s'?'s':k==='e'?'e':'';e.textContent=k==='s'?'Сохранение…':k==='e'?'Ошибка сохранения':'Сохранено'}
+async function save(st,o){setSt('s');try{o.updated=Date.now();await put(st,o);setSt('o');return true}catch(e){setSt('e');toast(e&&e.name==='QuotaExceededError'?'Нет места в хранилище. Старые данные не тронуты — сделайте резервную копию и освободите место.':'Не удалось сохранить. Старые данные не тронуты.');return false}}
+function queue(st,o){setSt('s');clearTimeout(T[o.id]);P[o.id]=[st,o];T[o.id]=setTimeout(()=>flush(o.id),400)}
+function flush(id){const p=P[id];if(!p)return;delete P[id];clearTimeout(T[id]);return save(p[0],p[1])}
+const flushAll=()=>Object.keys(P).forEach(flush);
+addEventListener('pagehide',flushAll);document.addEventListener('visibilitychange',()=>document.hidden&&flushAll());
+async function url(id){if(!id)return'';if(urls[id])return urls[id];const r=await getImg(id);return r?(urls[id]=URL.createObjectURL(r.blob)):''}
+const normC=c=>({v:2,id:c.id||uid(),name:String(c.name||'Без названия'),short:c.short||'',desc:c.desc||'',flag:c.flag||null,fit:c.fit||'contain',fav:c.fav?1:0,created:c.created||Date.now(),updated:c.updated||Date.now(),variants:(Array.isArray(c.variants)?c.variants:[]).map(v=>({id:v.id||uid(),ideo:v.ideo||'',iname:v.iname||'Идеология',name:v.name||'',short:v.short||'',flag:v.flag||null,fit:v.fit||'contain',notes:[v.desc,v.notes].filter(Boolean).join('\n\n')}))});
+const normI=i=>({v:2,id:i.id||uid(),name:String(i.name||'Без названия'),cat:i.cat||'',img:i.img||null,std:i.std?1:0,fav:i.fav?1:0,created:i.created||Date.now(),updated:i.updated||Date.now()});
+async function load(){
+ if(!(await tx('meta','readonly',t=>t.objectStore('meta').get('seeded')))){const n=await tx('ideologies','readonly',t=>t.objectStore('ideologies').count());if(!n){for(let k=0;k<STD.length;k++)await put('ideologies',normI({id:'std-'+(k+1),name:STD[k],std:1,created:k,updated:k}))}await put('meta',{id:'seeded',v:2,at:Date.now()})}
+ const keys=new Set(await tx('images','readonly',t=>t.objectStore('images').getAllKeys()));
+ const rc=await all('countries'),ri=await all('ideologies');S.c=rc.map(normC);S.i=ri.map(normI);
+ for(const c of S.c){const r=rc.find(x=>x.id===c.id);if(r.v!==2||'capital' in r||'alt' in r)await put('countries',c)}
+ for(const i of S.i){const r=ri.find(x=>x.id===i.id);if(r.v!==2||'short' in r||'full' in r)await put('ideologies',i)}
+ let fixed=0;const chk=o=>{if(o.flag&&!keys.has(o.flag)){o.flag=null;fixed++}};
+ S.c.forEach(c=>{chk(c);c.variants.forEach(chk)});S.i.forEach(i=>{if(i.img&&!keys.has(i.img)){i.img=null}});
+ if(fixed){for(const c of S.c)await save('countries',c);toast('Проверка данных: убрано ссылок на потерянные изображения — '+fixed)}
+}
+/* ---------- helpers ---------- */
+function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,4500)}
+const getC=id=>S.c.find(c=>c.id===id),getI=id=>S.i.find(i=>i.id===id);
+const fd=t=>new Date(t).toLocaleDateString('ru-RU');
+const eff=(c,v)=>({name:v.name||c.name,short:v.short||c.short,flag:v.flag||c.flag,fit:v.flag?v.fit:c.fit});
+function flag(id,fit,cls=''){return `<div class="flag ${cls}" ${id?`data-a="zoom" data-id="${id}"`:''}>${id?`<img data-img="${id}" style="object-fit:${fit||'contain'}" alt="">`:'нет флага'}</div>`}
+function modal(h){$('#mb').innerHTML=h;$('#md').hidden=false;hydrate()}
+const closeM=()=>{$('#md').hidden=true;if(m3){m3('x');m3=null}};
+function snap(c,force){const n=Date.now();if(force||!hist.length||hist.at(-1).id!==c.id||n-lastSnap>3000){hist.push({id:c.id,data:JSON.stringify(c)});if(hist.length>30)hist.shift()}lastSnap=n}
+function hydrate(){document.querySelectorAll('img[data-img]').forEach(async i=>{const u=await url(i.dataset.img);if(u)i.src=u})}
+/* ---------- views ---------- */
+const hash=()=>location.hash.slice(1)||'home';
+function render(){
+ document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',!cur&&a.dataset.p===hash()));
+ const v={home:vHome,countries:vCountries,ideologies:vIdeos,new:vNew,backup:vBackup,settings:vSettings};
+ $('#main').innerHTML=cur&&getC(cur)?vCountry(getC(cur)):(cur=null,(v[hash()]||vHome)());hydrate();if(!cur&&hash()==='settings')est();
+}
+function cardC(c){return `<article class="card" data-a="open" data-id="${c.id}">${flag(c.flag,c.fit)}<h3>${esc(c.name)}</h3><p class="mut">${esc(c.short)}${c.short?' — ':''}вариантов: ${c.variants.length}</p><button class="star ${c.fav?'on':''}" data-a="fav" data-id="${c.id}" aria-label="Избранное">★</button></article>`}
+function vHome(){
+ const rc=[...S.c].sort((a,b)=>b.updated-a.updated).slice(0,4),ri=[...S.i].sort((a,b)=>b.created-a.created).slice(0,5);
+ return `<h1>Государства и их идеологии</h1><p class="mut">Одно государство — много названий и флагов. Всё хранится на вашем устройстве.</p>
+ <div class="grid" style="margin:16px 0"><div class="card"><div class="stat">${S.c.length}</div>государств</div><div class="card"><div class="stat">${S.i.length}</div>идеологий</div></div>
+ <div class="row"><button class="btn" data-a="go" data-p="new">Создать государство</button></div>
+ <h2>Последние изменённые</h2>${rc.length?`<div class="grid">${rc.map(cardC).join('')}</div>`:'<p class="mut">Пока нет государств. Создайте первое.</p>'}
+ <h2 style="margin-top:22px">Недавно добавленные идеологии</h2>${ri.map(i=>`<div class="li"><div><b>${esc(i.name)}</b><p class="mut">${esc(i.cat)}</p></div></div>`).join('')}`}
+function listC(){
+ let a=S.c.filter(c=>(!favC||c.fav)&&(c.name+c.short).toLowerCase().includes(qC.toLowerCase()));
+ a.sort(sC==='name'?(x,y)=>x.name.localeCompare(y.name,'ru'):(x,y)=>y.updated-x.updated);
+ return a.length?a.map(cardC).join(''):'<p class="mut">Ничего не найдено.</p>'}
+function vCountries(){return `<h1>Мои государства</h1><div class="row"><input id="q" placeholder="Поиск" value="${esc(qC)}"><select id="sc"><option value="upd" ${sC==='upd'?'selected':''}>По дате изменения</option><option value="name" ${sC==='name'?'selected':''}>По названию</option></select><button class="chip ${favC?'on':''}" data-a="favC">★ Избранные</button><button class="btn" data-a="go" data-p="new">Создать</button></div><div class="grid" id="list">${listC()}</div>`}
+function vNew(){tmp={};return `<h1>Создать государство</h1>
+ <label>Основное название *</label><input id="n_name" placeholder="Например, Республика Альберия">
+ <label>Краткое название</label><input id="n_short"><label>Описание</label><textarea id="n_desc"></textarea>
+ <label>Основной флаг</label><div class="row"><button class="btn g" data-a="pick" data-t="new">Загрузить флаг</button><span class="mut" id="fstat">не выбран</span></div>
+ <div class="row"><button class="btn" data-a="create">Создать и открыть редактор</button></div>`}
+function vCountry(c){
+ const tabs=[['ov','Обзор'],['li','Список'],['ca','Карточки'],['ed','Редактор']];
+ const body={ov:vOv,li:vLi,ca:vCa,ed:vEd}[tab](c);
+ return `<div class="row noprint"><button class="btn g" data-a="go" data-p="countries">← Назад</button><button class="btn g" data-a="undo">Отменить</button><button class="btn g" data-a="dup" data-id="${c.id}">Дублировать</button><button class="btn g" data-a="exp" data-id="${c.id}">Экспорт</button><button class="btn g" data-a="print">Печать</button><button class="btn d" data-a="del" data-id="${c.id}">Удалить</button></div>
+ <h1>${esc(c.name)}</h1><div class="chips noprint" style="margin-bottom:10px">${tabs.map(t=>`<button class="chip ${tab===t[0]?'on':''}" data-a="tab" data-t="${t[0]}">${t[1]}</button>`).join('')}</div>${body}`}
+function vOv(c){
+ const v=c.variants.find(x=>x.id===sel),e=v?eff(c,v):{name:c.name,short:c.short,flag:c.flag,fit:c.fit};
+ return `<div class="chips noprint"><button class="chip ${!v?'on':''}" data-a="sel" data-id="">Основное</button>${c.variants.map(x=>`<button class="chip ${x.id===sel?'on':''}" data-a="sel" data-id="${x.id}">${esc(x.iname)}</button>`).join('')}</div>
+ <div class="hero">${flag(e.flag,e.fit,'big')}<div><h2>${esc(e.name)}</h2><p class="mut">${esc(e.short)}</p>${v?`<p class="mut">${esc(v.iname)}</p><p>${esc(v.notes)}</p>`:`<p>${esc(c.desc)}</p>`}</div></div>`}
+function vLi(c){return c.variants.length?c.variants.map(v=>{const e=eff(c,v);return `<div class="li">${flag(e.flag,e.fit,'sm')}<div><b>${esc(e.name)}</b><p class="mut">${esc(v.iname)}${e.short?' — '+esc(e.short):''}</p></div></div>`}).join(''):'<p class="mut">Вариантов нет. Добавьте их во вкладке «Редактор».</p>'}
+function vCa(c){return c.variants.length?`<div class="grid">${c.variants.map(v=>{const e=eff(c,v);return `<div class="card">${flag(e.flag,e.fit)}<h3>${esc(e.name)}</h3><p class="mut">${esc(v.iname)}</p></div>`}).join('')}</div>`:'<p class="mut">Вариантов нет.</p>'}
+function fctl(t,id,fit,vid=''){return `<div class="row noprint"><button class="btn g" data-a="pick" data-t="${t}" data-v="${vid}">${id?'Заменить флаг':'Загрузить флаг'}</button>${id?`<button class="btn g" data-a="zoom" data-id="${id}">Увеличить</button><button class="btn g" data-a="flagdel" data-t="${t}" data-v="${vid}">Удалить флаг</button>`:''}<select data-k="fit" ${vid?`data-v="${vid}"`:''} data-r="1"><option value="contain" ${fit!=='cover'?'selected':''}>Сохранить пропорции</option><option value="cover" ${fit==='cover'?'selected':''}>Заполнить область</option></select></div>`}
+function vEd(c){
+ return `<div class="vb"><h3>Основные данные</h3>
+ <label>Основное название</label><input data-k="name" value="${esc(c.name)}"><label>Краткое название</label><input data-k="short" value="${esc(c.short)}">
+ <label>Описание</label><textarea data-k="desc">${esc(c.desc)}</textarea>${flag(c.flag,c.fit,'big')}${fctl('c',c.flag,c.fit)}</div>
+ <h2>Идеологические варианты</h2>
+ <div class="row noprint"><select id="ia">${[...S.i].sort((a,b)=>a.name.localeCompare(b.name,'ru')).map(i=>`<option value="${i.id}">${esc(i.name)}</option>`).join('')}</select><button class="btn" data-a="addv">Добавить вариант</button></div>
+ ${c.variants.map(v=>`<div class="vb"><h3>${esc(v.iname)}</h3>
+ <label>Полное название государства</label><input data-v="${v.id}" data-k="name" placeholder="${esc(c.name)}" value="${esc(v.name)}">
+ <label>Краткое название</label><input data-v="${v.id}" data-k="short" placeholder="${esc(c.short)}" value="${esc(v.short)}">
+ <label>Дополнительные заметки</label><textarea data-v="${v.id}" data-k="notes">${esc(v.notes)}</textarea>
+ ${flag(v.flag||c.flag,v.fit,'big')}${fctl('v',v.flag,v.fit,v.id)}
+ <div class="row noprint"><button class="btn g" data-a="copyv" data-v="${v.id}">Копировать вариант</button><button class="btn d" data-a="delv" data-v="${v.id}">Удалить вариант</button></div></div>`).join('')}`}
+function listI(){
+ let a=S.i.filter(i=>(!favI||i.fav)&&(i.name+i.cat).toLowerCase().includes(qI.toLowerCase()));
+ a.sort((x,y)=>sI==='az'?x.name.localeCompare(y.name,'ru'):y.name.localeCompare(x.name,'ru'));
+ return a.map(i=>`<div class="li">${i.img?`<div class="flag sm"><img data-img="${i.img}" alt=""></div>`:''}<div><b>${esc(i.name)}</b> ${i.cat?`<p class="mut">${esc(i.cat)}</p>`:''}<div class="row"><button class="btn g" data-a="infoI" data-id="${i.id}">Подробнее</button><button class="btn g" data-a="editI" data-id="${i.id}">Изменить</button><button class="btn d" data-a="delI" data-id="${i.id}">Удалить</button><button class="star ${i.fav?'on':''}" style="position:static" data-a="favI" data-id="${i.id}">★</button></div></div></div>`).join('')||'<p class="mut">Ничего не найдено.</p>'}
+function vIdeos(){return `<h1>Библиотека идеологий</h1><div class="row"><input id="qi" placeholder="Поиск" value="${esc(qI)}"><select id="si"><option value="az" ${sI==='az'?'selected':''}>А — Я</option><option value="za" ${sI==='za'?'selected':''}>Я — А</option></select><button class="chip ${favI?'on':''}" data-a="favIo">★ Избранные</button><button class="btn" data-a="newI">Создать идеологию</button></div><div id="list">${listI()}</div>`}
+function vBackup(){const lb=localStorage.getItem('lastBackup');return `<h1>Резервные копии</h1><p class="mut">Последняя копия: ${lb?fd(+lb):'ещё не создавалась'}. Архив ZIP содержит manifest.json, countries.json, ideologies.json и папку images.</p>
+ <h3 style="margin-top:16px">Экспорт</h3><div class="row"><button class="btn" data-a="bnow">Создать резервную копию сейчас</button><button class="btn g" data-a="expI">Только библиотека идеологий</button><button class="btn g" data-a="expJ">Государства в JSON (без картинок)</button></div>
+ <p class="mut">Одно государство экспортируется кнопкой «Экспорт» на его странице.</p>
+ <h3 style="margin-top:16px">Импорт и восстановление</h3><div class="row"><button class="btn g" data-a="impPick">Выбрать файл .zip или .json</button></div><p class="mut">Совпадающие записи не перезаписываются без вашего выбора.</p>`}
+function vSettings(){return `<h1>Настройки</h1><p class="mut" id="est">Проверка хранилища…</p><div class="row"><button class="btn g" data-a="persist">Запросить постоянное хранение</button><button class="btn d" data-a="wipe">Удалить все данные</button></div><p class="mut">Версия данных: 2 (обновление 1.1). Новые версии приложения будут переносить ваши записи автоматически.</p>`}
+async function est(){try{const e=await navigator.storage.estimate();$('#est').textContent=`Занято ${(e.usage/1048576).toFixed(1)} МБ из ${(e.quota/1048576).toFixed(0)} МБ`}catch(x){$('#est').textContent='Оценка места недоступна в этом браузере'}}
+/* ---------- actions ---------- */
+const A={
+ go(d){cur=null;if(location.hash==='#'+d.p)render();else location.hash=d.p},
+ open(d){cur=d.id;tab='ov';sel=null;render()},
+ tab(d){tab=d.t;render()},
+ sel(d){sel=d.id||null;render()},
+ async fav(d){const c=getC(d.id);c.fav=c.fav?0:1;await save('countries',c);render()},
+ async favI(d){const i=getI(d.id);i.fav=i.fav?0:1;await save('ideologies',i);render()},
+ favC(){favC=!favC;render()},favIo(){favI=!favI;render()},
+ pick(d){ft={t:d.t,vid:d.v};$('#fi').click()},
+ zoom(d){modal(`<img data-img="${d.id}" alt=""><div class="row"><button class="btn g" data-a="closeM">Закрыть</button></div>`)},
+ closeM,print(){window.print()},undo,
+ async create(){const name=$('#n_name').value.trim();if(!name)return toast('Укажите основное название');
+  const c=normC({name,short:$('#n_short').value.trim()||name,desc:$('#n_desc').value.trim(),flag:tmp.flag});
+  if(await save('countries',c)){S.c.push(c);hist.push({id:c.id,data:null});cur=c.id;tab='ed';sel=null;render()}},
+ async del(d){const c=getC(d.id);if(!confirm(`Удалить государство «${c.name}» со всеми вариантами? Это можно отменить кнопкой «Отменить» до закрытия страницы.`))return;
+  snap(c,true);flush(c.id);try{await rm('countries',c.id);S.c=S.c.filter(x=>x!==c);cur=null;location.hash='countries';render();toast('Государство удалено')}catch(e){setSt('e')}},
+ async dup(d){const c=normC(JSON.parse(JSON.stringify(getC(d.id))));c.id=uid();c.name+=' (копия)';c.fav=0;c.created=Date.now();if(await save('countries',c)){S.c.push(c);hist.push({id:c.id,data:null});cur=c.id;render();toast('Копия создана')}},
+ async addv(){const c=getC(cur),i=getI($('#ia').value);snap(c,true);c.variants.push({id:uid(),ideo:i.id,iname:i.name,name:'',short:'',flag:null,fit:'contain',desc:'',notes:''});await save('countries',c);render()},
+ async copyv(d){const c=getC(cur),v=c.variants.find(x=>x.id===d.v);snap(c,true);c.variants.push({...v,id:uid(),name:v.name?v.name+' (копия)':''});await save('countries',c);render()},
+ async delv(d){const c=getC(cur);if(!confirm('Удалить этот идеологический вариант?'))return;snap(c,true);c.variants=c.variants.filter(x=>x.id!==d.v);await save('countries',c);render()},
+ async flagdel(d){if(!confirm('Удалить флаг?'))return;const c=getC(cur);snap(c,true);(d.t==='v'?c.variants.find(v=>v.id===d.v):c).flag=null;await save('countries',c);render()},
+ /* ideologies */
+ newI(){formI({})},
+ editI(d){formI(getI(d.id))},
+ infoI(d){const i=getI(d.id),u=S.c.flatMap(c=>c.variants.filter(v=>v.ideo===i.id).map(v=>`<li>${esc(c.name)}: ${esc(v.name||c.name)}</li>`));
+  modal(`<h2>${esc(i.name)}</h2><p class="mut">${i.cat?'Категория: '+esc(i.cat):''}</p><h3>Используется в государствах</h3>${u.length?`<ul>${u.join('')}</ul>`:'<p class="mut">Пока нигде.</p>'}<div class="row"><button class="btn g" data-a="closeM">Закрыть</button></div>`)},
+ async saveI(d){const name=$('#f_name').value.trim();if(!name)return toast('Укажите название идеологии');
+  const i=d.id?getI(d.id):normI({});Object.assign(i,{name,cat:$('#f_cat').value.trim()});if(tmp.img)i.img=tmp.img;
+  if(await save('ideologies',i)){if(!S.i.includes(i))S.i.push(i);S.c.forEach(c=>c.variants.forEach(v=>{if(v.ideo===i.id)v.iname=i.name}));closeM();render()}},
+ delI(d){const i=getI(d.id),n=S.c.reduce((s,c)=>s+c.variants.filter(v=>v.ideo===i.id).length,0);
+  modal(`<h2>Удалить «${esc(i.name)}»?</h2><p>Вы действительно хотите удалить эту идеологию? Она исчезнет из библиотеки. Данные существующих государств, связанные с ней, также могут быть затронуты.</p><p class="mut">Вариантов в государствах: ${n}</p><div class="row"><button class="btn" data-a="delIlib" data-id="${i.id}">Только из библиотеки</button><button class="btn d" data-a="delIall" data-id="${i.id}">Из библиотеки и всех государств</button><button class="btn g" data-a="closeM">Отмена</button></div>`)},
+ delIlib(d){return rmIdeo(d.id,false)},
+ delIall(d){const n=S.c.reduce((s,c)=>s+c.variants.filter(v=>v.ideo===d.id).length,0);if(!confirm(`Внимание: будут безвозвратно удалены все варианты этой идеологии (${n}) вместе с их названиями, флагами и заметками. Продолжить?`))return;return rmIdeo(d.id,true)},
+ /* backup */
+ async bnow(){await dl('ideology-flags-'+new Date().toISOString().slice(0,10)+'.zip',await build(S.c,S.i));localStorage.setItem('lastBackup',Date.now())},
+ async exp(d){const c=getC(d.id);await dl('state-'+c.id.slice(0,8)+'.zip',await build([c],S.i))},
+ async expI(){await dl('ideologies.zip',await build([],S.i))},
+ async expJ(){await dl('countries.json',new Blob([JSON.stringify({countries:S.c})],{type:'application/json'}))},
+ impPick(){$('#imf').click()},
+ m3(d){const f=m3;m3=null;$('#md').hidden=true;f&&f(d.v)},
+ async persist(){const ok=navigator.storage&&navigator.storage.persist&&await navigator.storage.persist();toast(ok?'Постоянное хранение включено':'Браузер не разрешил постоянное хранение')},
+ async wipe(){if(!confirm('Удалить ВСЕ государства, идеологии и флаги на этом устройстве?')||!confirm('Это необратимо. Сначала создайте резервную копию. Удалить всё?'))return;
+  for(const s of ['countries','ideologies','images','meta'])await tx(s,'readwrite',t=>t.objectStore(s).clear());S={c:[],i:[]};hist=[];await load();render();toast('Данные удалены')}
+};
+async function rmIdeo(id,cascade){try{
+ if(cascade)for(const c of S.c)if(c.variants.some(v=>v.ideo===id)){snap(c,true);c.variants=c.variants.filter(v=>v.ideo!==id);if(!await save('countries',c))return}
+ await rm('ideologies',id);S.i=S.i.filter(x=>x.id!==id);closeM();render();toast('Идеология удалена')}catch(e){setSt('e');toast('Не удалось удалить. Данные не тронуты.')}}
+function formI(i){tmp={};modal(`<h2>${i.id?'Изменить идеологию':'Создать идеологию'}</h2><label>Название *</label><input id="f_name" value="${esc(i.name)}"><label>Категория</label><input id="f_cat" value="${esc(i.cat)}"><label>Символ</label><div class="row"><button class="btn g" data-a="pick" data-t="i">Загрузить изображение</button><span class="mut" id="fstat">${i.img?'есть':'нет'}</span></div><div class="row"><button class="btn" data-a="saveI" data-id="${i.id||''}">Сохранить</button><button class="btn g" data-a="closeM">Отмена</button></div>`)}
+async function undo(){const h=hist.pop();if(!h)return toast('Нечего отменять');clearTimeout(T[h.id]);delete P[h.id];
+ if(h.data===null){S.c=S.c.filter(x=>x.id!==h.id);await rm('countries',h.id);if(cur===h.id)cur=null;location.hash='countries'}
+ else{const c=JSON.parse(h.data),k=S.c.findIndex(x=>x.id===c.id);k<0?S.c.push(c):S.c[k]=c;await save('countries',c)}
+ render();toast('Действие отменено')}
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b){if(b.id==='md'||b.closest('.mb')||true)A[b.dataset.a]&&A[b.dataset.a](b.dataset);return}if(e.target.id==='md')closeM()});
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.id==='q'){qC=t.value;$('#list').innerHTML=listC();hydrate();return}
+ if(t.id==='qi'){qI=t.value;$('#list').innerHTML=listI();hydrate();return}
+ if(t.id==='sc'){sC=t.value;render();return}if(t.id==='si'){sI=t.value;render();return}
+ if(t.dataset.k===undefined||!cur)return;const c=getC(cur);snap(c);
+ const o=t.dataset.v?c.variants.find(v=>v.id===t.dataset.v):c;o[t.dataset.k]=t.value;queue('countries',c);if(t.dataset.r)render()});
+$('#fi').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f||!ft)return;
+ const type=f.type||MIME[(f.name.split('.').pop()||'').toLowerCase().replace('jpeg','jpg')]||'';
+ if(!OK.includes(type))return toast('Нужен файл PNG, JPG, WEBP или SVG');if(f.size>10e6)return toast('Файл больше 10 МБ');
+ const id=uid();setSt('s');try{await put('images',{id,type,blob:new Blob([f],{type})});setSt('o')}catch(err){setSt('e');return toast(err&&err.name==='QuotaExceededError'?'Нет места для изображения':'Не удалось сохранить изображение')}
+ if(ft.t==='new'){tmp.flag=id;$('#fstat').textContent='флаг выбран'}else if(ft.t==='i'){tmp.img=id;$('#fstat').textContent='выбрано'}
+ else{const c=getC(cur);snap(c,true);(ft.t==='v'?c.variants.find(v=>v.id===ft.vid):c).flag=id;await save('countries',c);render()}};
+$('#imf').onchange=e=>{const f=e.target.files[0];e.target.value='';f&&imp(f)};
+addEventListener('hashchange',()=>{cur=null;render()});
+/* ---------- backup ---------- */
+async function dl(name,blob){const d=window.claude&&await claude.use('downloads');
+ if(d){try{await d.save({filename:name,data:blob});toast('Файл готов')}catch(e){if(!e||e.code!=='declined')toast('Не удалось сохранить файл')}return}
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click()}
+async function build(cs,is){const z=new JSZip(),ids=new Set(),im={};
+ cs.forEach(c=>{c.flag&&ids.add(c.flag);c.variants.forEach(v=>v.flag&&ids.add(v.flag))});is.forEach(i=>i.img&&ids.add(i.img));
+ for(const id of ids){const r=await getImg(id);if(r){const ext=Object.keys(MIME).find(k=>MIME[k]===r.type)||'png';im[id]=ext;z.file(`images/${id}.${ext}`,r.blob)}}
+ z.file('manifest.json',JSON.stringify({app:'ideology-flags',format:1,created:new Date().toISOString(),counts:{countries:cs.length,ideologies:is.length,images:Object.keys(im).length},images:im},null,1));
+ z.file('countries.json',JSON.stringify(cs));z.file('ideologies.json',JSON.stringify(is));return z.generateAsync({type:'blob'})}
+function ask3(n){return new Promise(r=>{m3=r;modal(`<h2>Найдены совпадения: ${n}</h2><p>Записи с такими же идентификаторами уже есть. Что сделать?</p><div class="row"><button class="btn d" data-a="m3" data-v="replace">Заменить</button><button class="btn" data-a="m3" data-v="copy">Создать копии</button><button class="btn g" data-a="m3" data-v="skip">Пропустить</button></div><button class="btn g" data-a="m3" data-v="x">Отменить импорт</button>`)})}
+async function imp(f){try{
+ let C=[],I=[],imgs={},miss=0;
+ if(/\.json$/i.test(f.name)){const j=JSON.parse(await f.text());C=j.countries||(Array.isArray(j)?j:[]);I=j.ideologies||[]}
+ else{const z=await JSZip.loadAsync(f),mf=z.file('manifest.json');if(!mf)throw new Error('В архиве нет manifest.json');
+  const m=JSON.parse(await mf.async('string'));if(m.app!=='ideology-flags')throw new Error('Это не архив Ideology Flags');if(m.format>1)throw new Error('Архив создан более новой версией приложения');
+  C=JSON.parse(await z.file('countries.json').async('string'));I=JSON.parse(await z.file('ideologies.json').async('string'));
+  for(const id in m.images){const e=z.file(`images/${id}.${m.images[id]}`);if(e)imgs[id]=new Blob([await e.async('arraybuffer')],{type:MIME[m.images[id]]});else miss++}}
+ if(!Array.isArray(C)||!Array.isArray(I))throw new Error('Неверная структура данных');
+ C=C.filter(c=>c&&c.id&&c.name).map(normC);I=I.filter(i=>i&&i.id&&i.name).map(normI);
+ const cc=C.filter(c=>getC(c.id)).length+I.filter(i=>!i.std&&getI(i.id)).length;
+ const mode=cc?await ask3(cc):'copy';if(mode==='x')return toast('Импорт отменён');
+ for(const id in imgs)await put('images',{id,type:imgs[id].type,blob:imgs[id]});
+ let added=0;
+ for(let c of C){const ex=getC(c.id);if(ex){if(mode==='skip')continue;if(mode==='copy'){c={...c,id:uid(),name:c.name+' (копия)'}}}
+  if(await save('countries',c)){const k=S.c.findIndex(x=>x.id===c.id);k<0?S.c.push(c):S.c[k]=c;added++}}
+ for(const i of I){const ex=getI(i.id);if(ex&&mode!=='replace')continue;if(await save('ideologies',i)){const k=S.i.findIndex(x=>x.id===i.id);k<0?S.i.push(i):S.i[k]=i}}
+ render();toast(`Импортировано государств: ${added}${miss?`. Не найдено изображений: ${miss}`:''}`)
+ }catch(e){setSt('e');toast('Ошибка импорта: '+(e.message||'файл повреждён'))}}
+/* ---------- init ---------- */
+(async()=>{try{db=await openDB();await load();setSt('o');render();
+ }catch(e){setSt('e');$('#main').innerHTML='<h1>Хранилище недоступно</h1><p class="mut">Браузер не дал доступ к IndexedDB (возможно, приватный режим). Откройте страницу в обычном окне.</p>'}})();
+</script>
+</body>
+</html>
